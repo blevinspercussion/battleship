@@ -19,16 +19,23 @@ const ship = (length, hitLocations, sunk) => {
   return { length, hitLocations, sunk, hit, isSunk };
 };
 
-const gameBoard = (shipList) => {
+const gameBoard = (shipList, misses) => {
   const placeShip = (x, y, shipLength) => {
     let newShip = ship(shipLength, [], false);
+    shipList.push(newShip);
   };
 
   // takes coordinates, determines whether attack hit a ship,
   // sends 'hit' function to correct ship or records coords of missed shot
-  const receiveAttack = (x, y) => {};
+  const receiveAttack = (x, y) => {
+    for (ship in shipList) {
+      if (x <= ship.x + ship.length && y === ship.y) {
+        ship.hit();
+      }
+    }
+  };
 
-  return { shipList, placeShip, receiveAttack };
+  return { shipList, placeShip, receiveAttack, misses };
 };
 
 //////////////////////////////////////
